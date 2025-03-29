@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Anatomy</title>
+    <title>Cognarena Technologies</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.2/cdn.min.js" defer></script>
     <style>
@@ -12,7 +12,7 @@
                 background-image: url('assets/bg2.png') !important;
             }
             .hero-content {
-                transform: translateY(-150%);
+                transform: translateY(-30%);
             }
         }
         
@@ -90,12 +90,14 @@
             scroll-behavior: smooth;
         }
 
-        /* Service Card Styles */
+        /* Enhanced Service Card Styles */
         .service-card {
             position: relative;
             overflow: hidden;
             cursor: pointer;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            will-change: transform;
         }
         
         .service-card::before {
@@ -110,11 +112,15 @@
             transition: opacity 0.3s ease;
         }
         
-        .service-card:hover::before {
+        .service-card:hover::before,
+        .service-card:focus::before,
+        .service-card.active::before {
             opacity: 1;
         }
         
-        .service-card:hover {
+        .service-card:hover,
+        .service-card:focus,
+        .service-card.active {
             transform: translateY(-10px) scale(1.03);
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
@@ -131,12 +137,31 @@
             transition: all 0.3s ease;
         }
         
-        .service-card:hover .service-title {
+        .service-card:hover .service-title,
+        .service-card:focus .service-title,
+        .service-card.active .service-title {
             bottom: 0;
         }
         
         .service-card:active {
             transform: translateY(-5px) scale(1.01);
+        }
+
+        @media (hover: none) {
+            /* Touch device specific styles */
+            .service-card {
+                -webkit-tap-highlight-color: transparent;
+            }
+            .service-card.active {
+                transform: translateY(-5px) scale(1.01);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+            .service-card.active::before {
+                opacity: 1;
+            }
+            .service-card.active .service-title {
+                bottom: 0;
+            }
         }
     </style>
 </head>
@@ -226,37 +251,43 @@
                 We offer technical training, R&D solutions, and electronics sales under one roof. Our services include gamified courses on Robotics, IoT, and AI, development of SPMs and school/college projects—including 3D printing services—and a store for quality electronic components.
             </p>
             
-            <!-- Service Cards -->
+            <!-- Service Cards with Touch Support -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Academics Card -->
-                <div class="service-card rounded-lg overflow-hidden relative aspect-square" 
-                     onclick="window.location.href='#'">
+                <a href="#" class="service-card rounded-lg overflow-hidden relative aspect-square block" 
+                   onclick="event.preventDefault(); this.classList.toggle('active')"
+                   onkeydown="if(event.key === 'Enter') this.click()"
+                   tabindex="0">
                     <img src="h1.jpg" alt="Academics" class="w-full h-full object-cover">
                     <div class="service-title">
                         <h3 class="text-xl font-bold">Academics</h3>
                         <p class="text-sm mt-1">Gamified courses on Robotics, IoT & AI</p>
                     </div>
-                </div>
+                </a>
                 
                 <!-- R&D Card -->
-                <div class="service-card rounded-lg overflow-hidden relative aspect-square" 
-                     onclick="window.location.href='#'">
+                <a href="#" class="service-card rounded-lg overflow-hidden relative aspect-square block" 
+                   onclick="event.preventDefault(); this.classList.toggle('active')"
+                   onkeydown="if(event.key === 'Enter') this.click()"
+                   tabindex="0">
                     <img src="h2.jpg" alt="Research and Development" class="w-full h-full object-cover">
                     <div class="service-title">
                         <h3 class="text-xl font-bold">Research & Development</h3>
                         <p class="text-sm mt-1">SPMs and custom projects for institutions</p>
                     </div>
-                </div>
+                </a>
                 
                 <!-- Store Card -->
-                <div class="service-card rounded-lg overflow-hidden relative aspect-square" 
-                     onclick="window.location.href='#'">
+                <a href="#" class="service-card rounded-lg overflow-hidden relative aspect-square block" 
+                   onclick="event.preventDefault(); this.classList.toggle('active')"
+                   onkeydown="if(event.key === 'Enter') this.click()"
+                   tabindex="0">
                     <img src="h3.jpg" alt="Cognarena Store" class="w-full h-full object-cover">
                     <div class="service-title">
                         <h3 class="text-xl font-bold">Cognarena Store</h3>
                         <p class="text-sm mt-1">Quality electronic components</p>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -300,5 +331,31 @@
     <footer class="bg-gray-800 text-white text-center py-4">
         <p class="text-gray-400 mt-2">&copy; 2025 | Website Design by Walker</p>
     </footer>
+
+    <script>
+        // Touchscreen optimization
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceCards = document.querySelectorAll('.service-card');
+            
+            // Handle touch events
+            serviceCards.forEach(card => {
+                // Reset active state when clicking elsewhere
+                document.addEventListener('click', function(e) {
+                    if (!card.contains(e.target)) {
+                        card.classList.remove('active');
+                    }
+                }, false);
+                
+                // Better touch feedback
+                card.addEventListener('touchstart', function() {
+                    this.classList.add('active');
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function() {
+                    setTimeout(() => this.classList.remove('active'), 150);
+                }, {passive: true});
+            });
+        });
+    </script>
 </body>
 </html>
