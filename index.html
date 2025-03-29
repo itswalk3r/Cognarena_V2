@@ -11,9 +11,8 @@
             .hero {
                 background-image: url('assets/bg2.png') !important;
             }
-            /* Move hero text higher on mobile */
             .hero-content {
-                transform: translateY(-30%);
+                transform: translateY(-150%);
             }
         }
         
@@ -90,6 +89,55 @@
         html {
             scroll-behavior: smooth;
         }
+
+        /* Service Card Styles */
+        .service-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .service-card:hover::before {
+            opacity: 1;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .service-title {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover .service-title {
+            bottom: 0;
+        }
+        
+        .service-card:active {
+            transform: translateY(-5px) scale(1.01);
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -119,7 +167,7 @@
                  @click.away="open = false" 
                  class="absolute top-full right-0 w-48 bg-white shadow-lg rounded-md mt-2 py-2 z-50">
                 <a href="#about" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">About</a>
-                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Services</a>
+                <a href="#services" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Services</a>
                 <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Courses</a>
                 <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Products</a>
                 <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Gallery</a>
@@ -130,7 +178,7 @@
         <!-- Desktop Menu -->
         <ul class="hidden md:flex space-x-6">
             <li><a href="#about" class="hover:text-gray-500">About</a></li>
-            <li><a href="#" class="hover:text-gray-500">Services</a></li>
+            <li><a href="#services" class="hover:text-gray-500">Services</a></li>
             <li><a href="#" class="hover:text-gray-500">Courses</a></li>
             <li><a href="#" class="hover:text-gray-500">Products</a></li>
             <li><a href="#" class="hover:text-gray-500">Gallery</a></li>
@@ -171,21 +219,45 @@
     </section>
 
     <!-- Our Services Section -->
-    <section class="text-center py-10 bg-white">
-        <h2 class="text-3xl font-bold">Our Services</h2>
-        <p class="text-gray-600 mt-2">Our wide range of services can be divided into three sections - Academics, R&D and Store</p>
-    </section>
-
-    <!-- Hover Effect Section -->
-    <section class="flex flex-col md:flex-row w-4/5 mx-auto justify-between py-10 space-y-4 md:space-y-0 md:space-x-6">
-        <div class="w-full md:w-1/3 aspect-square cursor-pointer p-2 transform transition duration-300 hover:scale-110 hover:-translate-y-2 rounded-lg overflow-hidden">
-            <img src="h1.jpg" alt="Academics" class="w-full h-full object-cover rounded-[20%]">
-        </div>
-        <div class="w-full md:w-1/3 aspect-square cursor-pointer p-2 transform transition duration-300 hover:scale-110 hover:-translate-y-2 rounded-lg overflow-hidden">
-            <img src="h2.jpg" alt="R&D" class="w-full h-full object-cover rounded-[20%]">
-        </div>
-        <div class="w-full md:w-1/3 aspect-square cursor-pointer p-2 transform transition duration-300 hover:scale-110 hover:-translate-y-2 rounded-lg overflow-hidden">
-            <img src="h3.jpg" alt="Store" class="w-full h-full object-cover rounded-[20%]">
+    <section id="services" class="text-center py-16 px-4 md:px-8 lg:px-16 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold mb-12">Our Services</h2>
+            <p class="text-lg text-gray-700 max-w-3xl mx-auto mb-12">
+                We offer technical training, R&D solutions, and electronics sales under one roof. Our services include gamified courses on Robotics, IoT, and AI, development of SPMs and school/college projects—including 3D printing services—and a store for quality electronic components.
+            </p>
+            
+            <!-- Service Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Academics Card -->
+                <div class="service-card rounded-lg overflow-hidden relative aspect-square" 
+                     onclick="window.location.href='#'">
+                    <img src="h1.jpg" alt="Academics" class="w-full h-full object-cover">
+                    <div class="service-title">
+                        <h3 class="text-xl font-bold">Academics</h3>
+                        <p class="text-sm mt-1">Gamified courses on Robotics, IoT & AI</p>
+                    </div>
+                </div>
+                
+                <!-- R&D Card -->
+                <div class="service-card rounded-lg overflow-hidden relative aspect-square" 
+                     onclick="window.location.href='#'">
+                    <img src="h2.jpg" alt="Research and Development" class="w-full h-full object-cover">
+                    <div class="service-title">
+                        <h3 class="text-xl font-bold">Research & Development</h3>
+                        <p class="text-sm mt-1">SPMs and custom projects for institutions</p>
+                    </div>
+                </div>
+                
+                <!-- Store Card -->
+                <div class="service-card rounded-lg overflow-hidden relative aspect-square" 
+                     onclick="window.location.href='#'">
+                    <img src="h3.jpg" alt="Cognarena Store" class="w-full h-full object-cover">
+                    <div class="service-title">
+                        <h3 class="text-xl font-bold">Cognarena Store</h3>
+                        <p class="text-sm mt-1">Quality electronic components</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
