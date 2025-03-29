@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Anatomy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.2/cdn.min.js" defer></script>
+    <style>
+        @media (max-width: 768px) {
+            .hero {
+                background-image: url('assets/bg2.png') !important;
+            }
+            /* Move hero text higher on mobile */
+            .hero-content {
+                transform: translateY(-150%);
+            }
+        }
+        
+        /* Hamburger menu animations */
+        .hamburger-top,
+        .hamburger-middle,
+        .hamburger-bottom {
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            top: 0;
+            left: 0;
+            background: #333;
+            transform: rotate(0);
+            transition: all 0.5s;
+        }
+        
+        .hamburger-middle {
+            transform: translateY(7px);
+        }
+        
+        .hamburger-bottom {
+            transform: translateY(14px);
+        }
+        
+        .open .hamburger-top {
+            transform: rotate(45deg) translateY(6px) translateX(6px);
+        }
+        
+        .open .hamburger-middle {
+            display: none;
+        }
+        
+        .open .hamburger-bottom {
+            transform: rotate(-45deg) translateY(6px) translateX(-6px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation Menu -->
+    <nav class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="text-xl font-bold flex items-center">
+            <img src="logo.png" alt="Logo" class="h-10 mr-1">
+            <span class="font-[Futura Round] font-bold text-xl ml-1">Cognarena</span>
+        </div>
+    
+        <div x-data="{ open: false }" class="md:hidden relative">
+            <!-- Hamburger Button -->
+            <button @click="open = !open" class="text-gray-700 focus:outline-none relative w-6 h-5">
+                <span class="hamburger-top" :class="{'open': open}"></span>
+                <span class="hamburger-middle" :class="{'open': open}"></span>
+                <span class="hamburger-bottom" :class="{'open': open}"></span>
+            </button>
+            
+            <!-- Mobile Menu -->
+            <div x-show="open" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-300"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 translate-y-4"
+                 @click.away="open = false" 
+                 class="absolute top-full right-0 w-48 bg-white shadow-lg rounded-md mt-2 py-2 z-50">
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">About</a>
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Services</a>
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Courses</a>
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Products</a>
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Gallery</a>
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Contact</a>
+            </div>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <ul class="hidden md:flex space-x-6">
+            <li><a href="#" class="hover:text-gray-500">About</a></li>
+            <li><a href="#" class="hover:text-gray-500">Services</a></li>
+            <li><a href="#" class="hover:text-gray-500">Courses</a></li>
+            <li><a href="#" class="hover:text-gray-500">Products</a></li>
+            <li><a href="#" class="hover:text-gray-500">Gallery</a></li>
+            <li><a href="#" class="hover:text-gray-500">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section with Parallax Effect -->
+    <header class="relative h-screen bg-fixed bg-center bg-cover flex flex-col justify-center items-center text-white text-center hero" style="background-image: url('assets/bg1.png');">
+        <div class="hero-content">
+            <h1 class="text-4xl md:text-5xl font-bold">Level up your learning</h1>
+            <p class="italic text-base md:text-lg mt-2">Enhance your learning with our gamified courses</p>
+            <button class="mt-4 bg-blue-500 text-white px-6 py-2 shadow-lg hover:bg-blue-600 transition">Join Us!</button>
+        </div>
+    </header>
+
+    <!-- Rest of your content remains the same -->
+    <!-- Our Services Section -->
+    <section class="text-center py-10">
+        <h2 class="text-3xl font-bold">Our Services</h2>
+        <p class="text-gray-600 mt-2">Our wide range of services can be divided into three sections - Academics, R&D and Store</p>
+    </section>
+
+    <!-- Hover Effect Section -->
+    <section class="flex flex-col md:flex-row w-4/5 mx-auto justify-between py-10 space-y-4 md:space-y-0 md:space-x-6">
+        <div class="w-full md:w-1/3 aspect-square cursor-pointer p-2 transform transition duration-300 hover:scale-110 hover:-translate-y-2 rounded-lg overflow-hidden">
+            <img src="h1.jpg" alt="Academics" class="w-full h-full object-cover rounded-[20%]">
+        </div>
+        <div class="w-full md:w-1/3 aspect-square cursor-pointer p-2 transform transition duration-300 hover:scale-110 hover:-translate-y-2 rounded-lg overflow-hidden">
+            <img src="h2.jpg" alt="R&D" class="w-full h-full object-cover rounded-[20%]">
+        </div>
+        <div class="w-full md:w-1/3 aspect-square cursor-pointer p-2 transform transition duration-300 hover:scale-110 hover:-translate-y-2 rounded-lg overflow-hidden">
+            <img src="h3.jpg" alt="Store" class="w-full h-full object-cover rounded-[20%]">
+        </div>
+    </section>
+
+    <!-- Carousel/Slider Section -->
+    <section x-data="{ current: 0, images: ['c1.jpeg', 'c2.jpg', 'c3.jpeg'] }" class="relative w-full mx-auto" x-init="setInterval(() => current = (current + 1) % images.length, 3000)">
+        <div class="overflow-hidden relative h-64 md:h-96 w-full">
+            <template x-for="(image, index) in images" :key="index">
+                <img :src="image" class="absolute w-full h-full object-cover transition-opacity duration-500" :class="{'opacity-100': index === current, 'opacity-0': index !== current}">
+            </template>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p class="text-gray-400 mt-2">&copy; 2025 | Website Design by Walker</p>
+    </footer>
+</body>
+</html>
