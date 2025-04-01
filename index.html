@@ -147,21 +147,82 @@
             transform: translateY(-5px) scale(1.01);
         }
 
-        @media (hover: none) {
-            /* Touch device specific styles */
-            .service-card {
-                -webkit-tap-highlight-color: transparent;
-            }
-            .service-card.active {
-                transform: translateY(-5px) scale(1.01);
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            }
-            .service-card.active::before {
-                opacity: 1;
-            }
-            .service-card.active .service-title {
-                bottom: 0;
-            }
+         /* Academics Section Styles */
+         .tech-card {
+            transition: all 0.5s ease;
+            min-height: 400px;
+            position: relative;
+        }
+        
+        .tech-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tech-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        
+        .tech-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        
+        /* Mobile Slider */
+        .tech-slider-container {
+            position: relative;
+        }
+        
+        .tech-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 1rem;
+        }
+        
+        .tech-slider::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tech-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+            position: relative;
+        }
+        
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .slider-dot.active {
+            background-color: rgba(0, 0, 0, 0.7);
         }
     </style>
 </head>
@@ -193,7 +254,7 @@
                  class="absolute top-full right-0 w-48 bg-white shadow-lg rounded-md mt-2 py-2 z-50">
                 <a href="#about" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">About</a>
                 <a href="#services" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Services</a>
-                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Courses</a>
+                <a href="#academics" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Courses</a>
                 <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Products</a>
                 <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Gallery</a>
                 <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Contact</a>
@@ -204,7 +265,7 @@
         <ul class="hidden md:flex space-x-6">
             <li><a href="#about" class="hover:text-gray-500">About</a></li>
             <li><a href="#services" class="hover:text-gray-500">Services</a></li>
-            <li><a href="#" class="hover:text-gray-500">Courses</a></li>
+            <li><a href="#academics" class="hover:text-gray-500">Courses</a></li>
             <li><a href="#" class="hover:text-gray-500">Products</a></li>
             <li><a href="#" class="hover:text-gray-500">Gallery</a></li>
             <li><a href="#" class="hover:text-gray-500">Contact</a></li>
@@ -254,7 +315,7 @@
             <!-- Service Cards with Touch Support -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Academics Card -->
-                <a href="#" class="service-card rounded-lg overflow-hidden relative aspect-square block" 
+                <a href="#academics" class="service-card rounded-lg overflow-hidden relative aspect-square block" 
                    onclick="event.preventDefault(); this.classList.toggle('active')"
                    onkeydown="if(event.key === 'Enter') this.click()"
                    tabindex="0">
@@ -288,6 +349,139 @@
                         <p class="text-sm mt-1">Quality electronic components</p>
                     </div>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academics Section -->
+    <section id="academics" class="py-16 px-4 md:px-8 lg:px-16 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-6">Academic Programs</h2>
+            <p class="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-12">
+                We offer comprehensive courses, hands-on internships, and intensive workshops in cutting-edge technologies 
+                to equip students with future-ready skills. Our programs blend theory with practical implementation.
+            </p>
+            
+            <!-- Technologies Section -->
+            <div x-data="{
+                currentSlide: 0,
+                technologies: [
+                    {
+                        name: 'Robotics',
+                        image: 'robotics-bg.jpg',
+                        points: [
+                            'Combines mechanics, electronics, and coding to build smart machines',
+                            'Drives automation in industries like healthcare, manufacturing, and space',
+                            'Enhances creativity, problem-solving, and logical thinking'
+                        ]
+                    },
+                    {
+                        name: 'Internet of Things (IoT)',
+                        image: 'iot-bg.jpg',
+                        points: [
+                            'Connects devices to the internet for smart automation and real-time data',
+                            'Powers smart homes, healthcare, and industrial systems for efficiency',
+                            'Essential for building future-ready smart cities and industries'
+                        ]
+                    },
+                    {
+                        name: 'Artificial Intelligence (AI)',
+                        image: 'ai-bg.jpg',
+                        points: [
+                            'Enables machines to think, learn, and make decisions like humans',
+                            'Transforms industries with automation, predictive analytics, and deep learning',
+                            'Key to innovations in robotics, finance, cybersecurity, and more'
+                        ]
+                    }
+                ],
+                autoRotate: true,
+                interval: null,
+                goToSlide(index) {
+                    this.currentSlide = index;
+                    const slider = this.$refs.slider;
+                    slider.scrollTo({
+                        left: index * slider.offsetWidth,
+                        behavior: 'smooth'
+                    });
+                },
+                startAutoRotation() {
+                    if (window.innerWidth < 768) {
+                        this.interval = setInterval(() => {
+                            this.currentSlide = (this.currentSlide + 1) % this.technologies.length;
+                            this.goToSlide(this.currentSlide);
+                        }, 3000);
+                    }
+                },
+                stopAutoRotation() {
+                    clearInterval(this.interval);
+                }
+            }"
+            x-init="startAutoRotation()"
+            @mouseenter="stopAutoRotation()"
+            @mouseleave="startAutoRotation()"
+            class="tech-slider-container">
+                
+                <!-- Desktop Grid (3 columns) -->
+                <div class="hidden md:grid grid-cols-3 gap-8">
+                    <template x-for="(tech, index) in technologies" :key="index">
+                        <div class="tech-card bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-all h-full">
+                            <div class="relative h-full">
+                                <img :src="tech.image" :alt="tech.name" class="tech-image">
+                                <div class="tech-overlay"></div>
+                                <div class="tech-content p-6 text-white">
+                                    <h3 class="text-2xl font-bold mb-4" x-text="tech.name"></h3>
+                                    <ul class="space-y-3 flex-grow">
+                                        <template x-for="(point, i) in tech.points" :key="i">
+                                            <li class="flex items-start">
+                                                <span class="text-blue-300 mr-2">🔹</span>
+                                                <span x-text="point" class="text-white"></span>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                
+                <!-- Mobile Slider -->
+                <div class="md:hidden">
+                    <div x-ref="slider" class="tech-slider">
+                        <template x-for="(tech, index) in technologies" :key="index">
+                            <div class="tech-slide">
+                                <div class="tech-card h-full mx-2">
+                                    <div class="relative h-full">
+                                        <img :src="tech.image" :alt="tech.name" class="tech-image">
+                                        <div class="tech-overlay"></div>
+                                        <div class="tech-content p-6 text-white">
+                                            <h3 class="text-2xl font-bold mb-4" x-text="tech.name"></h3>
+                                            <ul class="space-y-3">
+                                                <template x-for="(point, i) in tech.points" :key="i">
+                                                    <li class="flex items-start">
+                                                        <span class="text-blue-300 mr-2">🔹</span>
+                                                        <span x-text="point" class="text-white"></span>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    <!-- Slider Navigation Dots -->
+                    <div class="slider-nav">
+                        <template x-for="(_, index) in technologies" :key="index">
+                            <button 
+                                @click="goToSlide(index)"
+                                class="slider-dot"
+                                :class="{ 'active': currentSlide === index }"
+                                aria-label="Go to slide">
+                            </button>
+                        </template>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -333,6 +527,20 @@
     </footer>
 
     <script>
+        // Enhanced slider functionality
+        document.addEventListener('alpine:initialized', () => {
+            Alpine.data('techSlider', () => ({
+                currentSlide: 0,
+                init() {
+                    const slider = this.$refs.slider;
+                    if (slider) {
+                        slider.addEventListener('scroll', () => {
+                            this.currentSlide = Math.round(slider.scrollLeft / slider.offsetWidth);
+                        });
+                    }
+                }
+            }));
+        });
         // Touchscreen optimization
         document.addEventListener('DOMContentLoaded', function() {
             const serviceCards = document.querySelectorAll('.service-card');
