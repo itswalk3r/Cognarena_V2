@@ -147,29 +147,29 @@
             transform: translateY(-5px) scale(1.01);
         }
 
-         /* Academics Section Styles */
-         .tech-card {
-            transition: all 0.5s ease;
-            min-height: 400px;
+        /* Updated Academics Section Styles */
+        .tech-card {
+            transition: all 0.6s cubic-bezier(0.25,0.1,0.25,1);
             position: relative;
+            overflow: hidden;
+            will-change: transform, opacity;
         }
         
         .tech-content {
             position: relative;
             z-index: 2;
             height: 100%;
-            display: flex;
-            flex-direction: column;
+            transition: inherit;
         }
         
-        .tech-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+        .text-backdrop {
+            position: relative;
             background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: inherit;
         }
         
         .tech-image {
@@ -178,22 +178,70 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             z-index: 0;
+            transition: inherit;
+            border-radius: 12px;
+        }
+        
+        /* Desktop Carousel */
+        .desktop-carousel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        .side-card {
+            width: 250px;
+            height: 400px;
+            transform: scale(0.93) translateZ(-50px);
+            opacity: 0.8;
+            filter: brightness(0.8);
+            transition: all 0.6s cubic-bezier(0.25,0.1,0.25,1);
+            border-radius: 12px;
+        }
+        
+        .center-card {
+            width: 350px;
+            height: 500px;
+            z-index: 10;
+            transform: scale(1.1) translateZ(0);
+            filter: brightness(1);
+            transition: all 0.6s cubic-bezier(0.25,0.1,0.25,1);
+            border-radius: 12px;
+        }
+        
+        .title-only {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            transition: inherit;
+            border-radius: 12px;
+        }
+        
+        .title-only h3 {
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 12px;
+            transition: inherit;
         }
         
         /* Mobile Slider */
-        .tech-slider-container {
-            position: relative;
-        }
-        
         .tech-slider {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            margin-bottom: 1rem;
         }
         
         .tech-slider::-webkit-scrollbar {
@@ -203,13 +251,14 @@
         .tech-slide {
             flex: 0 0 100%;
             scroll-snap-align: start;
-            position: relative;
+            transition: transform 0.6s cubic-bezier(0.25,0.1,0.25,1);
         }
         
         .slider-nav {
             display: flex;
             justify-content: center;
             gap: 0.5rem;
+            margin-top: 1rem;
         }
         
         .slider-dot {
@@ -218,11 +267,22 @@
             border-radius: 50%;
             background-color: rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25,0.1,0.25,1);
         }
         
         .slider-dot.active {
             background-color: rgba(0, 0, 0, 0.7);
+            transform: scale(1.2);
+        }
+
+        /* Animation Timing */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.25,0.1,0.25,1) forwards;
         }
     </style>
 </head>
@@ -353,18 +413,18 @@
         </div>
     </section>
 
-    <!-- Academics Section -->
+               <!-- Updated Academics Section -->
     <section id="academics" class="py-16 px-4 md:px-8 lg:px-16 bg-gray-50">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-6">Academic Programs</h2>
-            <p class="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-6 animate-fade-in text-white">Academic Programs</h2>
+            <p class="text-lg text-white text-center max-w-3xl mx-auto mb-12 animate-fade-in">
                 We offer comprehensive courses, hands-on internships, and intensive workshops in cutting-edge technologies 
                 to equip students with future-ready skills. Our programs blend theory with practical implementation.
             </p>
             
             <!-- Technologies Section -->
             <div x-data="{
-                currentSlide: 0,
+                currentIndex: 0,
                 technologies: [
                     {
                         name: 'Robotics',
@@ -372,7 +432,8 @@
                         points: [
                             'Combines mechanics, electronics, and coding to build smart machines',
                             'Drives automation in industries like healthcare, manufacturing, and space',
-                            'Enhances creativity, problem-solving, and logical thinking'
+                            'Enhances creativity, problem-solving, and logical thinking',
+                            'Used in: Manufacturing, healthcare, defense, space exploration, and agriculture.'
                         ]
                     },
                     {
@@ -381,7 +442,8 @@
                         points: [
                             'Connects devices to the internet for smart automation and real-time data',
                             'Powers smart homes, healthcare, and industrial systems for efficiency',
-                            'Essential for building future-ready smart cities and industries'
+                            'Essential for building future-ready smart cities and industries',
+                            'Used in: Smart homes, healthcare, automotive, industrial automation, and agriculture.'
                         ]
                     },
                     {
@@ -390,76 +452,131 @@
                         points: [
                             'Enables machines to think, learn, and make decisions like humans',
                             'Transforms industries with automation, predictive analytics, and deep learning',
-                            'Key to innovations in robotics, finance, cybersecurity, and more'
+                            'Helps create smarter personal assistants, chatbots, and automation tools.',
+                            'Used in: Healthcare, finance, cybersecurity, marketing, and autonomous vehicles.'
                         ]
                     }
                 ],
                 autoRotate: true,
                 interval: null,
+                isTransitioning: false,
+                transitionDuration: 600,
+                init() {
+                    this.startAutoRotation();
+                },
+                get visibleTechnologies() {
+                    const arr = [];
+                    for (let i = -1; i <= 1; i++) {
+                        const index = (this.currentIndex + i + this.technologies.length) % this.technologies.length;
+                        arr.push({
+                            ...this.technologies[index],
+                            position: i
+                        });
+                    }
+                    return arr;
+                },
+                nextSlide() {
+                    if (this.isTransitioning) return;
+                    this.isTransitioning = true;
+                    this.currentIndex = (this.currentIndex + 1) % this.technologies.length;
+                    setTimeout(() => this.isTransitioning = false, this.transitionDuration);
+                },
+                prevSlide() {
+                    if (this.isTransitioning) return;
+                    this.isTransitioning = true;
+                    this.currentIndex = (this.currentIndex - 1 + this.technologies.length) % this.technologies.length;
+                    setTimeout(() => this.isTransitioning = false, this.transitionDuration);
+                },
                 goToSlide(index) {
-                    this.currentSlide = index;
-                    const slider = this.$refs.slider;
-                    slider.scrollTo({
-                        left: index * slider.offsetWidth,
-                        behavior: 'smooth'
-                    });
+                    if (this.isTransitioning || index === this.currentIndex) return;
+                    this.isTransitioning = true;
+                    this.currentIndex = index;
+                    setTimeout(() => this.isTransitioning = false, this.transitionDuration);
                 },
                 startAutoRotation() {
-                    if (window.innerWidth < 768) {
-                        this.interval = setInterval(() => {
-                            this.currentSlide = (this.currentSlide + 1) % this.technologies.length;
-                            this.goToSlide(this.currentSlide);
-                        }, 3000);
-                    }
+                    this.stopAutoRotation();
+                    this.interval = setInterval(() => {
+                        this.nextSlide();
+                    }, 3000);
                 },
                 stopAutoRotation() {
-                    clearInterval(this.interval);
+                    if (this.interval) {
+                        clearInterval(this.interval);
+                        this.interval = null;
+                    }
+                },
+                getCardStyle(position) {
+                    if (position === 0) return 'center-card';
+                    return 'side-card';
+                },
+                getCardTransform(position) {
+                    if (position === 0) return 'translateX(0) scale(1.1)';
+                    if (position === -1) return 'translateX(-110%) scale(0.93)';
+                    return 'translateX(110%) scale(0.93)';
                 }
             }"
-            x-init="startAutoRotation()"
             @mouseenter="stopAutoRotation()"
-            @mouseleave="startAutoRotation()"
-            class="tech-slider-container">
+            @mouseleave="startAutoRotation()">
                 
-                <!-- Desktop Grid (3 columns) -->
-                <div class="hidden md:grid grid-cols-3 gap-8">
-                    <template x-for="(tech, index) in technologies" :key="index">
-                        <div class="tech-card bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-all h-full">
-                            <div class="relative h-full">
-                                <img :src="tech.image" :alt="tech.name" class="tech-image">
-                                <div class="tech-overlay"></div>
-                                <div class="tech-content p-6 text-white">
-                                    <h3 class="text-2xl font-bold mb-4" x-text="tech.name"></h3>
-                                    <ul class="space-y-3 flex-grow">
-                                        <template x-for="(point, i) in tech.points" :key="i">
-                                            <li class="flex items-start">
-                                                <span class="text-blue-300 mr-2">🔹</span>
-                                                <span x-text="point" class="text-white"></span>
-                                            </li>
-                                        </template>
-                                    </ul>
+                <!-- Desktop Carousel -->
+                <div class="hidden md:block">
+                    <div class="desktop-carousel h-[660px]">
+                        <template x-for="(tech, index) in visibleTechnologies" :key="index">
+                            <div 
+                                @click="if(tech.position !== 0) goToSlide((currentIndex + tech.position + technologies.length) % technologies.length)"
+                                :class="getCardStyle(tech.position)"
+                                :style="`transform: ${getCardTransform(tech.position)}`"
+                                class="tech-card absolute transition-all duration-600 ease-out rounded-xl"
+                                :style="`z-index: ${tech.position === 0 ? 10 : 5 - Math.abs(tech.position)}`">
+                                <img :src="tech.image" :alt="tech.name" class="tech-image rounded-xl">
+                                <div class="tech-content h-full">
+                                    <div x-show="tech.position === 0" class="h-full flex flex-col justify-end p-6">
+                                        <div class="text-backdrop rounded-xl">
+                                            <h3 class="text-2xl font-bold mb-4 text-white" x-text="tech.name"></h3>
+                                            <ul class="space-y-3 text-white">
+                                                <template x-for="(point, i) in tech.points" :key="i">
+                                                    <li class="flex items-start">
+                                                        <span class="text-blue-300 mr-2">🔹</span>
+                                                        <span x-text="point"></span>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div x-show="tech.position !== 0" class="title-only rounded-xl">
+                                        <h3 class="text-white" x-text="tech.name"></h3>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </template>
+                        </template>
+                    </div>
+                    <div class="flex justify-center mt-6 space-x-3">
+                        <template x-for="(tech, index) in technologies" :key="index">
+                            <button 
+                                @click="goToSlide(index)"
+                                class="slider-dot"
+                                :class="{ 'active': currentIndex === index }"
+                                :aria-label="`Show ${tech.name}`">
+                            </button>
+                        </template>
+                    </div>
                 </div>
                 
                 <!-- Mobile Slider -->
                 <div class="md:hidden">
-                    <div x-ref="slider" class="tech-slider">
+                    <div class="tech-slider" x-ref="slider">
                         <template x-for="(tech, index) in technologies" :key="index">
                             <div class="tech-slide">
-                                <div class="tech-card h-full mx-2">
-                                    <div class="relative h-full">
-                                        <img :src="tech.image" :alt="tech.name" class="tech-image">
-                                        <div class="tech-overlay"></div>
-                                        <div class="tech-content p-6 text-white">
-                                            <h3 class="text-2xl font-bold mb-4" x-text="tech.name"></h3>
-                                            <ul class="space-y-3">
+                                <div class="tech-card h-[500px] mx-2 rounded-xl">
+                                    <img :src="tech.image" :alt="tech.name" class="tech-image rounded-xl">
+                                    <div class="tech-content h-full flex flex-col justify-end p-6">
+                                        <div class="text-backdrop rounded-xl">
+                                            <h3 class="text-2xl font-bold mb-4 text-white" x-text="tech.name"></h3>
+                                            <ul class="space-y-3 text-white">
                                                 <template x-for="(point, i) in tech.points" :key="i">
                                                     <li class="flex items-start">
                                                         <span class="text-blue-300 mr-2">🔹</span>
-                                                        <span x-text="point" class="text-white"></span>
+                                                        <span x-text="point"></span>
                                                     </li>
                                                 </template>
                                             </ul>
@@ -469,15 +586,13 @@
                             </div>
                         </template>
                     </div>
-                    
-                    <!-- Slider Navigation Dots -->
                     <div class="slider-nav">
-                        <template x-for="(_, index) in technologies" :key="index">
+                        <template x-for="(tech, index) in technologies" :key="index">
                             <button 
                                 @click="goToSlide(index)"
                                 class="slider-dot"
-                                :class="{ 'active': currentSlide === index }"
-                                aria-label="Go to slide">
+                                :class="{ 'active': currentIndex === index }"
+                                :aria-label="`Show ${tech.name}`">
                             </button>
                         </template>
                     </div>
@@ -540,7 +655,29 @@
                     }
                 }
             }));
+
+            // Enhanced mobile slider with smooth transitions
+            Alpine.data('mobileSlider', () => ({
+                currentSlide: 0,
+                slider: null,
+                init() {
+                    this.slider = this.$el.querySelector('.tech-slider');
+                    if (this.slider) {
+                        this.slider.addEventListener('scroll', Alpine.throttle(() => {
+                            this.currentSlide = Math.round(this.slider.scrollLeft / this.slider.offsetWidth);
+                        }, 100));
+                    }
+                },
+                goToSlide(index) {
+                    this.currentSlide = index;
+                    this.slider.scrollTo({
+                        left: index * this.slider.offsetWidth,
+                        behavior: 'smooth'
+                    });
+                }
+            }));
         });
+
         // Touchscreen optimization
         document.addEventListener('DOMContentLoaded', function() {
             const serviceCards = document.querySelectorAll('.service-card');
