@@ -287,7 +287,9 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100" >
+    <body class="overflow-x-hidden w-full max-w-full"></body>
+    
    <!-- Navigation Menu -->
 <nav class="bg-white shadow-md py-4 px-6 flex justify-between items-center sticky top-0 z-50">
     <!-- Logo Container - Now with click handler -->
@@ -334,42 +336,54 @@
     </ul>
 </nav>
 
-  <!-- Hero Section -->
-<header class="relative h-screen bg-fixed bg-center bg-cover text-white" style="background-image: url('assets/bg1.png');">
+<!-- Hero Section -->
+<header class="relative h-screen bg-fixed md:bg-fixed bg-center bg-cover text-white" style="background-image: url('assets/bg1.png');">
     <!-- Dark overlay -->
     <div class="absolute inset-0 bg-black bg-opacity-60"></div>
   
-    <div class="relative z-10 flex flex-col md:flex-row items-center justify-between h-full px-6 md:px-20">
+    <div class="relative z-10 flex flex-col md:flex-row items-center justify-between h-full px-6 md:px-20 transform translate-y-[-10%] md:translate-y-0">
   
-      <!-- Left side: hero image + text, shifted up -->
-      <div class="w-full md:w-1/2 relative" style="top: -20%;">
-        <!-- hero.png fixed to 800px wide -->
+      <!-- Left side: hero image + text -->
+      <div class="w-full md:w-1/2 relative md:top-[-20%] text-center md:text-left">
+        <!-- Mobile: hero3.png, Desktop: hero.png -->
         <div class="mb-6">
-          <img src="assets/hero.png" alt="Hero" class="w-[800px] max-w-full" />
+          <img src="assets/hero.png" alt="Hero" class="hidden md:block w-[800px] max-w-full" />
+          <img src="assets/hero3.png" alt="Hero Mobile" class="md:hidden w-full max-w-[500px] mx-auto" />
         </div>
   
-        <h1 class="text-4xl md:text-5xl font-bold">Level up your learning</h1>
+        <h1 class="text-3xl md:text-5xl font-bold">Level up your learning</h1>
         <p class="italic text-base md:text-lg mt-2 mb-6">
           Enhance your learning with our gamified courses
         </p>
-        <a href="#join-us" class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-200">
-          Join Us!
-        </a>
+        
+        <!-- Desktop Join Us button -->
+        <div class="hidden md:block">
+          <a href="#join-us" class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-200">
+            Join Our Tribe!
+          </a>
+        </div>
       </div>
   
-      <!-- Right side: Spline iframe full height & scaled -->
-<div class="w-full md:w-1/2 h-full flex items-center justify-center z-[-10] relative">
-    <div class="transform scale-[1.5] origin-center w-full h-[90%]">
-      <iframe
-        src="https://my.spline.design/robotfollowcursorforlandingpage-de31dc71ef502bbae52a9fab65b27975/"
-        frameborder="0"
-        class="w-full h-full"
-        loading="lazy"
-      ></iframe>
-    </div>
-  </div>
+      <!-- Right side: Spline iframe -->
+      <div class="w-full md:w-1/2 h-[50vh] md:h-full flex items-center justify-start md:justify-center z-[-10] relative overflow-hidden mt-8 md:mt-0">
+        <div class="transform scale-90 md:scale-[1.5] origin-left md:origin-center w-full h-full">
+          <iframe
+            src="https://my.spline.design/robotfollowcursorforlandingpage-de31dc71ef502bbae52a9fab65b27975/"
+            frameborder="0"
+            class="w-full h-full"
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
 
-  </header>
+      <!-- Mobile-only Join Us button at bottom (scaled 18% larger) -->
+      <div class="md:hidden absolute bottom-8 left-0 right-0 flex justify-center transform translate-y-[-0%] scale-140 origin-bottom">
+        <a href="#join-us" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-200">
+          Join Our Tribe!
+        </a>
+      </div>
+    </div>
+</header>
   
   
 
@@ -633,7 +647,7 @@
         </div>
     </section>
 
-   <!-- Join Us Section -->
+ <!-- Join Us Section -->
 <section id="join-us" class="py-16 bg-gray-50">
     <div class="container mx-auto px-4 max-w-2xl">
       <div class="text-center mb-12">
@@ -642,7 +656,10 @@
       </div>
   
       <form id="joinForm" class="bg-white rounded-xl shadow-md p-8 space-y-6" 
-            action="https://script.google.com/macros/s/AKfycby2zHa-O2UrgRgpxLc9Ct0ewKMqp7PV1bOlFiZTR2ndTfzJG1j9fEwWxddaA3GR88gL/exec" method="POST">
+            action="https://formspree.io/f/xvgkvavb" method="POST">
+        <!-- Status message container (hidden by default) -->
+        <div id="form-status" class="hidden p-4 mb-4 rounded-lg"></div>
+        
         <!-- Two-column layout for desktop -->
         <div class="grid md:grid-cols-2 gap-6">
           <div class="space-y-2">
@@ -704,14 +721,69 @@
         <input type="hidden" name="_captcha" value="false">
   
         <div class="pt-4">
-          <button type="submit"
+          <button type="submit" id="submit-btn"
                   class="w-full md:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-            Submit Application
+            <span id="submit-text">Submit Application</span>
+            <span id="spinner" class="hidden ml-2">
+              <svg class="animate-spin h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </span>
           </button>
         </div>
       </form>
     </div>
 </section>
+
+<script>
+  document.getElementById('joinForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = document.getElementById('submit-text');
+    const spinner = document.getElementById('spinner');
+    const statusEl = document.getElementById('form-status');
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    submitText.textContent = 'Submitting...';
+    spinner.classList.remove('hidden');
+    statusEl.classList.add('hidden');
+    
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        // Show success message
+        statusEl.textContent = 'Thank you! Your submission has been received.';
+        statusEl.classList.remove('hidden', 'bg-red-100', 'text-red-700');
+        statusEl.classList.add('bg-green-100', 'text-green-700');
+        form.reset();
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Form submission failed');
+      }
+    } catch (error) {
+      // Show error message
+      statusEl.textContent = `Oops! There was a problem submitting your form: ${error.message}`;
+      statusEl.classList.remove('hidden', 'bg-green-100', 'text-green-700');
+      statusEl.classList.add('bg-red-100', 'text-red-700');
+    } finally {
+      // Reset button state
+      submitBtn.disabled = false;
+      submitText.textContent = 'Submit Application';
+      spinner.classList.add('hidden');
+    }
+  });
+</script>
 
 
     <!-- Carousel/Slider Section with Navigation -->
@@ -815,46 +887,6 @@
             });
         });
     </script>
-    <!-- Form submission handling -->
-<script>
-    document.getElementById('joinForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Show loading state
-      const submitBtn = this.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = 'Submitting...';
-      
-      fetch(this.action, {
-        method: 'POST',
-        body: new URLSearchParams(new FormData(this)),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if(data.result === 'success') {
-          // Show success message
-          alert('Thank you for joining our community!');
-          // Reset form
-          this.reset();
-          // Optionally redirect to thank you page
-          // window.location.href = "thank-you.html";
-        } else {
-          throw new Error(data.error || 'Unknown error occurred');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('There was an error submitting your form. Please try again.');
-      })
-      .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Submit Application';
-      });
-    });
-  </script>
 <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.14.0/dist/shoelace.js"></script>
 <script>
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -865,6 +897,15 @@
         });
       });
     });
+    module.exports = {
+  theme: {
+    extend: {
+      scale: {
+        '140': '1.4', // Adds scale-140 class
+      }
+    }
+  }
+}
   </script>
   <script>
     // Add click handler to logo container
